@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stone Paper Scissor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex justify-center align-center">
+    
+    <section class="flex justify-between align-center vh-100 w-75">
+        <div class="compSection">
+            <div class="action-wrapper mblock-10 flex justify-center align-center font-15">&#9994;</div>
+            <div class="action-wrapper mblock-10 flex justify-center align-center font-15">&#9995;</div>
+            <div class="action-wrapper mblock-10 flex justify-center align-center font-15">&#9996;</div>
+        </div>
+
+    
+        <div class="userSection">
+            <div class="action-wrapper mblock-10 flex justify-center align-center font-15 pointer" data-id=0 onclick="setupOnClick(event)">&#9994;</div>
+            <div class="action-wrapper mblock-10 flex justify-center align-center font-15 pointer" data-id=1 onclick="setupOnClick(event)">&#9995;</div>
+            <div class="action-wrapper mblock-10 flex justify-center align-center font-15 pointer" data-id=2 onclick="setupOnClick(event)">&#9996;</div>
+        </div>
+    </section>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
