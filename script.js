@@ -5,26 +5,29 @@ const scoreObj = {
 
 const compSection = document.querySelectorAll(".compSection .action-wrapper");
 const userChoice = document.querySelectorAll(".userSection .action-wrapper");
+
+const userChoiceParent = userChoice[0].parentNode;
 const counter = document.getElementById("counter");
 const screen = document.getElementsByTagName("section")[0];
 
 function validateUserWin(userMove, compMove) {
-  if (userMove == compMove) return -1;
+  if (userMove === compMove) return -1;
 
   switch (compMove) {
     case 0:
-      if (userMove == 1) return 1;
-      else if (userMove == 2) return 0;
+      if (userMove === 1) return 1;
+      else if (userMove === 2) return 0;
     case 1:
-      if (userMove == 0) return 0;
-      else if (userMove == 2) return 1;
+      if (userMove === 0) return 0;
+      else if (userMove === 2) return 1;
     case 2:
-      if (userMove == 0) return 1;
-      else if (userMove == 1) return 0;
+      if (userMove === 0) return 1;
+      else if (userMove === 1) return 0;
   }
 }
 
 async function onClickOption(userMove) {
+  userMove = parseInt(userMove);
   const compMove = Math.floor(Math.random() * 3);
 
   compSection[compMove].setAttribute("id", "compChoice");
@@ -54,6 +57,8 @@ async function onClickOption(userMove) {
 }
 
 const resetScene = async (compMove, userMove) => {
+  const currenTotalScore = Math.max(scoreObj.comp, scoreObj.user);
+
   compSection[compMove].parentNode.removeAttribute("id", "selected");
   userChoice[userMove].parentNode.removeAttribute("id", "selected");
 
@@ -62,22 +67,8 @@ const resetScene = async (compMove, userMove) => {
 
   userChoice[userMove].style = "";
   compSection[compMove].style = "";
-
-  counter.innerHTML = `Place your Move<br><span>Computer : ${scoreObj.comp} v/s User : ${scoreObj.user}<span>`;
-};
-
-const setupOnClick = async (e) => {
-  const currenTotalScore = scoreObj.comp + scoreObj.user;
-  if (currenTotalScore <= 2) {
-    e.target.setAttribute("id", "userChoice");
-    e.target.setAttribute("onclick", "");
-    const value = e.target.dataset.id;
-    userChoice[value].parentNode.setAttribute("id", "selected");
-    const { compMove, userMove } = await onClickOption(value);
-    setTimeout(() => {
-      resetScene(compMove, userMove);
-      e.target.setAttribute("onclick", "setupOnClick(event)");
-    }, 2000);
+  if (currenTotalScore < 3) {
+    counter.innerHTML = `Place your Move<br><span>Computer : ${scoreObj.comp} v/s User : ${scoreObj.user}<span>`;
   } else {
     const button = document.createElement("button");
     button.textContent = "Reset";
@@ -94,3 +85,16 @@ const resetGame = () => {
 
   counter.innerHTML = "Start the Game";
 };
+
+userChoiceParent.addEventListener("click", async (e) => {
+  const currenTotalScore = Math.max(scoreObj.comp, scoreObj.user);
+  if (currenTotalScore <= 2) {
+    e.target.setAttribute("id", "userChoice");
+    const value = e.target.dataset.id;
+    userChoice[value].parentNode.setAttribute("id", "selected");
+    const { compMove, userMove } = await onClickOption(value);
+    setTimeout(() => {
+      resetScene(compMove, userMove);
+    }, 2000);
+  }
+});
